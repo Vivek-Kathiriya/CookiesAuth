@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using CookiesAuth.Data;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Mvc;
@@ -19,17 +20,21 @@ namespace CookiesAuth.Controllers
         [HttpPost]
         public IActionResult Login(string userName, string password)
         {
+            UserDA da = new UserDA();
+
+            var user = da.GetUser(userName, password);
+
+
+
             if (!string.IsNullOrEmpty(userName) && string.IsNullOrEmpty(password))
             {
                 return RedirectToAction("Login");
             }
 
-            //Check the user name and password
-            //Here can be implemented checking logic from the database
             ClaimsIdentity identity = null;
             bool isAuthenticated = false;
 
-            if (userName == "Admin" && password == "password")
+            if (user != null && user.Role == "Admin")
             {
 
                 //Create the identity for the user
@@ -41,7 +46,7 @@ namespace CookiesAuth.Controllers
                 isAuthenticated = true;
             }
 
-            if (userName == "Vivek" && password == "password")
+            if (user != null && user.Role == "User")
             {
                 //Create the identity for the user
                 identity = new ClaimsIdentity(new[] {
@@ -61,6 +66,28 @@ namespace CookiesAuth.Controllers
                 return RedirectToAction("Index", "Person");
             }
             return View();
+
+        }
+
+        public IActionResult Register()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public IActionResult Register(string userName, string password)
+        {
+            if (!string.IsNullOrEmpty(userName) && string.IsNullOrEmpty(password))
+            {
+                return RedirectToAction("Register");
+            }
+
+            UserDA da = new UserDA();
+
+            da.InsertUser(userName, password);
+
+            return RedirectToAction("Login", "Account");
+
         }
 
 

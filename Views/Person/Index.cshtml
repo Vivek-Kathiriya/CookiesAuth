@@ -5,6 +5,20 @@
     ViewBag.Title = "Index";
 }
 
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <h2><strong> Person </strong></h2><br /><br />
+            Hello @User.Identity.Name
+            <a asp-action="logout" asp-controller="account">
+                Logout
+            </a>
+            <br />
+            <br />
+        </div>
+    </div>
+</div>
+
 <div class="container pt-4">
     <div class="row">
         <div class="col-sm-6">
