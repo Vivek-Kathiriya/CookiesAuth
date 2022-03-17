@@ -7,11 +7,18 @@ using CookiesAuth.Data;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
 
 namespace CookiesAuth.Controllers
 {
     public class AccountController : Controller
     {
+        private readonly IConfiguration _Configuration;
+
+        public AccountController(IConfiguration configuration)
+        {
+            _Configuration = configuration;
+        }
         public IActionResult Login()
         {
             return View();
@@ -20,7 +27,7 @@ namespace CookiesAuth.Controllers
         [HttpPost]
         public IActionResult Login(string userName, string password)
         {
-            UserDA da = new UserDA();
+            UserDA da = new UserDA(_Configuration);
 
             var user = da.GetUser(userName, password);
 
@@ -82,7 +89,7 @@ namespace CookiesAuth.Controllers
                 return RedirectToAction("Register");
             }
 
-            UserDA da = new UserDA();
+            UserDA da = new UserDA(_Configuration);
 
             da.InsertUser(userName, password);
 

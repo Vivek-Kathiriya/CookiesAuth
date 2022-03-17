@@ -1,4 +1,5 @@
 ﻿using CookiesAuth.Models;
+using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -10,10 +11,16 @@ namespace CookiesAuth.Data
 {
     public class UserDA
     {
-        string connectionString = "Server=DESKTOP-97QQTCR\\SQL2019TRAINING;Database=MVCDatabase;Trusted_Connection=True;MultipleActiveResultSets=True";
+        private readonly IConfiguration _Configuration;
+
+        public UserDA(IConfiguration configuration)
+        {
+            _Configuration = configuration;
+        }
 
         public void InsertUser(string username, string password)
         {
+            string connectionString = this._Configuration.GetConnectionString("MVC");
             SqlConnection conn = new SqlConnection(connectionString);
             SqlCommand cmd = new SqlCommand("SP_Create_User", conn);
             cmd.CommandType = System.Data.CommandType.StoredProcedure;
@@ -39,6 +46,7 @@ namespace CookiesAuth.Data
 
             public UserModel GetUser(string username, string password)
         {
+            string connectionString = this._Configuration.GetConnectionString("MVC");
             SqlConnection conn = new SqlConnection(connectionString);
             SqlCommand cmd = new SqlCommand("SP_get_User", conn);
             cmd.CommandType = CommandType.StoredProcedure;

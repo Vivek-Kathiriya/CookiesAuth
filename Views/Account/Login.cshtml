@@ -4,7 +4,7 @@
 
     <div class="container">
         <div class="row">
-            <div class="col-md-3">
+            <div class="col-md-4">
                 <h2><strong>Login Page </strong></h2><br />
                 <form asp-action="login" method="post">
                     <div class="form-group">
@@ -18,11 +18,11 @@
                     <div class="form-check">
                         <button class="btn btn-info" type="reset">Reset</button>
                         <button type="submit" class="btn btn-primary">Submit</button>
+                        <button class="btn btn-success">
+                            @Html.ActionLink("Register", "Register")
+                        </button>
                     </div>
                 </form>
             </div>
-        </div>
-        <div class="btn btn-success">
-            @Html.ActionLink("Register", "Register")
         </div>
     </div>

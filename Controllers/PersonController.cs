@@ -7,18 +7,24 @@ using CookiesAuth.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
 using static CookiesAuth.Data.Person;
 
 namespace CookiesAuth.Controllers
 {
  
-    [Authorize]
+   [Authorize]
     public class PersonController : Controller
     {
+        private readonly IConfiguration _Configuration;
+        public PersonController(IConfiguration configuration)
+        {
+            _Configuration = configuration;
+        }
         // GET: Person
         public ActionResult Index()
         {
-            Person dal = new Person();
+            Person dal = new Person(_Configuration);
 
             var persons = dal.GetAllPerson();
 
@@ -67,7 +73,7 @@ namespace CookiesAuth.Controllers
                     person.AddressID = Convert.ToInt32(collection["AddressID"]);
 
 
-                    Person dal = new Person();
+                    Person dal = new Person(_Configuration);
 
                     dal.InsertPerson(person);
 
@@ -84,7 +90,7 @@ namespace CookiesAuth.Controllers
         // GET: Person/Edit/5
         public ActionResult Edit(int id)
         {
-            Person dal = new Person();
+            Person dal = new Person(_Configuration);
 
             var personDetails = dal.GetPerson(id);
 
@@ -118,7 +124,7 @@ namespace CookiesAuth.Controllers
                 person.EmailID = collection["EmailID"];
                 person.AddressID = Convert.ToInt32(collection["AddressID"]);
 
-                Person dal = new Person();
+                Person dal = new Person(_Configuration);
 
                 dal.UpdatePerson(person);
 
@@ -134,7 +140,7 @@ namespace CookiesAuth.Controllers
         [HttpDelete]
         public ActionResult DeletePerson(int PersonID)
         {
-            Person dal = new Person();
+            Person dal = new Person(_Configuration);
             dal.DeletePerson(PersonID);
             return null;
         }

@@ -12,7 +12,16 @@ namespace CookiesAuth.Data
 
     public class Person
     {
-        string connectionString = "Server=DESKTOP-97QQTCR\\SQL2019TRAINING;Database=MVCDatabase;Trusted_Connection=True;MultipleActiveResultSets=True";
+        //public Person()
+        //{
+
+        //}
+
+        private readonly IConfiguration _Configuration;
+        public Person(IConfiguration configuration)
+        {
+            _Configuration = configuration;
+        }
 
         public class PersonDetails
         {
@@ -31,7 +40,7 @@ namespace CookiesAuth.Data
 
         public List<PersonDetails> GetAllPerson()
         {
-
+            string connectionString = this._Configuration.GetConnectionString("MVC");
             SqlConnection conn = new SqlConnection(connectionString);
             SqlCommand cmd = new SqlCommand("SP_get_all_persons", conn);
             cmd.CommandType = System.Data.CommandType.StoredProcedure;
@@ -79,6 +88,7 @@ namespace CookiesAuth.Data
 
         public PersonDetails GetPerson(int id)
         {
+            string connectionString = this._Configuration.GetConnectionString("MVC");
             SqlConnection conn = new SqlConnection(connectionString);
             SqlCommand cmd = new SqlCommand("SP_get_person", conn);
             cmd.CommandType = CommandType.StoredProcedure;
@@ -109,7 +119,7 @@ namespace CookiesAuth.Data
         public void InsertPerson(PersonDetails obj)
         {
 
-
+            string connectionString = this._Configuration.GetConnectionString("MVC");
             SqlConnection conn = new SqlConnection(connectionString);
             SqlCommand cmd = new SqlCommand("SP_insert_person", conn);
             cmd.CommandType = System.Data.CommandType.StoredProcedure;
@@ -141,6 +151,7 @@ namespace CookiesAuth.Data
 
         public void DeletePerson(int id)
         {
+            string connectionString = this._Configuration.GetConnectionString("MVC");
             SqlConnection conn = new SqlConnection(connectionString);
             SqlCommand cmd = new SqlCommand("SP_delete_person", conn);
             cmd.CommandType = System.Data.CommandType.StoredProcedure;
@@ -170,6 +181,7 @@ namespace CookiesAuth.Data
 
         public void UpdatePerson(PersonDetails obj)
         {
+            string connectionString = this._Configuration.GetConnectionString("MVC");
             SqlConnection conn = new SqlConnection(connectionString);
             SqlCommand cmd = new SqlCommand("SP_update_person", conn);
             cmd.CommandType = System.Data.CommandType.StoredProcedure;
